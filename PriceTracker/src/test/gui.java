@@ -55,8 +55,6 @@ public class gui extends JFrame {
 		bottom.setBorder(new EmptyBorder(0, 0, 0, 0));
 		bottom.setLayout(new FlowLayout());
 		contentPane.add(bottom, BorderLayout.SOUTH);
-		this.setUndecorated(true);
-		this.setBackground(new Color(1.0f, 1.0f, 1.0f, 0f));
 		//File input_file = new File("/res/maxresdefault.png"); 
 //        BufferedImage image = new BufferedImage(1280, 720, 
 //                                BufferedImage.TYPE_INT_ARGB); 
