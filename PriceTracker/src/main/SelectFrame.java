@@ -1,7 +1,7 @@
 package main;
 
 import java.awt.Graphics;
-import java.awt.Rectangle;
+import structure.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -14,6 +14,7 @@ public class SelectFrame extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 
+	private Rectangle result;
 	/**
 	 * Launch the application.
 	 */
@@ -61,14 +62,17 @@ public class SelectFrame extends JDialog {
     			g.drawLine(start.x, end.y, end.x, end.y);
     			g.drawLine(start.x, start.y, start.x, end.y);
     			g.drawLine(end.x, start.y, end.x, end.y);
-    			root.setVisible(true);
-    			if(((main.Menu)root).dialogReturn == null) ((main.Menu)root).dialogReturn = new Rectangle(start.x, start.y, end.x - start.x, end.y - start.y);
+    			result = new Rectangle(start.x, start.y, end.x - start.x, end.y - start.y);
     			SelectFrame.this.dispose();
     		}    		
     	});
 		
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setVisible(true);
+	}
+	
+	public Rectangle getResult() {
+		return result;
 	}
 
 }
