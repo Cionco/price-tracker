@@ -36,7 +36,7 @@ public class SelectFrame extends JDialog {
 		contentPanel.setLayout(null);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPanel);
-		contentPanel.addMouseListener(new MouseAdapter() {
+		MouseAdapter m = new MouseAdapter() {
     		class Point {
     			public int x;
     			public int y;
@@ -46,26 +46,36 @@ public class SelectFrame extends JDialog {
     			}
     		}
     		
-    		Point start;
+    		Point start, current;
     		
     		@Override
     		public void mousePressed(MouseEvent e) {
+    			System.out.println("pressed " + e.getX() + " " + e.getY());
     			Graphics g = contentPanel.getGraphics();
-    			g.clearRect(0, 0, contentPanel.getWidth(), contentPanel.getHeight());
+//    			g.clearRect(0, 0, contentPanel.getWidth(), contentPanel.getHeight());
     			start = new Point(e.getX(), e.getY());
     		}
     		
     		public void mouseReleased(MouseEvent e) {
-    			Point end = new Point(e.getX(), e.getY());
-    			Graphics g = contentPanel.getGraphics();
-    			g.drawLine(start.x, start.y, end.x, start.y);
-    			g.drawLine(start.x, end.y, end.x, end.y);
-    			g.drawLine(start.x, start.y, start.x, end.y);
-    			g.drawLine(end.x, start.y, end.x, end.y);
-    			result = new Rectangle(start.x, start.y, end.x - start.x, end.y - start.y);
+    			System.out.println("released " + e.getX() + " " + e.getY());
+    			result = new Rectangle(start.x, start.y, current.x - start.x, current.y - start.y);
     			SelectFrame.this.dispose();
-    		}    		
-    	});
+    		}   
+    		
+    		public void mouseDragged(MouseEvent e) {
+    			System.out.println("released " + e.getX() + " " + e.getY());
+    			Graphics g = contentPanel.getGraphics();
+    			if(current != null) g.clearRect(Math.min(start.x, current.x), Math.min(start.y, current.y), Math.abs(current.x - start.x) + 1, Math.abs(current.y - start.y) + 1);
+    			current = new Point(e.getX(), e.getY());
+    			g.drawLine(start.x, start.y, current.x, start.y);
+    			g.drawLine(start.x, current.y, current.x, current.y);
+    			g.drawLine(start.x, start.y, start.x, current.y);
+    			g.drawLine(current.x, start.y, current.x, current.y);
+    		}
+    	};
+    	
+    	contentPanel.addMouseListener(m);
+    	contentPanel.addMouseMotionListener(m);
 		
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setVisible(true);
