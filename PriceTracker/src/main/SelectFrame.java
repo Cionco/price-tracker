@@ -11,8 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import structure.Rectangle;
+import structure.ResultDialog;
 
-public class SelectFrame extends JDialog {
+public class SelectFrame extends ResultDialog {
 
 	private final JPanel contentPanel = new JPanel();
 
@@ -22,7 +23,7 @@ public class SelectFrame extends JDialog {
 	 */
 	public static void main(String[] args) {
 		try {
-			new SelectFrame(null);
+			new SelectFrame();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -31,7 +32,7 @@ public class SelectFrame extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public SelectFrame(JFrame root) {
+	public SelectFrame() {
 		setBounds(0, 0, 1920, 1080);
 		//setBounds(400, 400, 460, 580);
 		setUndecorated(true);
