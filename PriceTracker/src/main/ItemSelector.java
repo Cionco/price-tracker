@@ -9,17 +9,20 @@ import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableColumn;
 
+import serialize.ItemsDao;
 import structure.ResultDialog;
-import structure.TableModel;
+import structure.ChangingTableModel;
 
 public class ItemSelector extends ResultDialog {
 
@@ -44,7 +47,9 @@ public class ItemSelector extends ResultDialog {
 		contentPane.setLayout(new BorderLayout());
 		setContentPane(contentPane);
 		
-		TableModel model = new TableModel(10);
+		ArrayList<String> items = ItemsDao.getItemList();
+		
+		ChangingTableModel model = new ChangingTableModel(items);
 		
 		itemListTable = new JTable(model);
 		JScrollPane tablePane = new JScrollPane(itemListTable);
@@ -60,6 +65,17 @@ public class ItemSelector extends ResultDialog {
 				setCellSize();
 			}
 		});
+		
+		JPanel bottomPane = new JPanel();
+		bottomPane.setLayout(new GridLayout(1, 2));
+		JTextField txt_newItemInput = new JTextField();
+		bottomPane.add(txt_newItemInput);
+		JButton btn_addNewItem = new JButton("Add Item");
+		btn_addNewItem.addActionListener(e -> {
+			model.addRow(txt_newItemInput.getText());
+		});
+		bottomPane.add(btn_addNewItem);
+		contentPane.add(bottomPane, BorderLayout.SOUTH);
 		setVisible(true);
 	}
 	
