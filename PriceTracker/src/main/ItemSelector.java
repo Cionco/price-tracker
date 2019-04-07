@@ -73,6 +73,9 @@ public class ItemSelector extends ResultDialog {
 		JButton btn_addNewItem = new JButton("Add Item");
 		btn_addNewItem.addActionListener(e -> {
 			model.addRow(txt_newItemInput.getText());
+			txt_newItemInput.setText("");
+			itemListTable.revalidate();
+			itemListTable.repaint();
 		});
 		bottomPane.add(btn_addNewItem);
 		contentPane.add(bottomPane, BorderLayout.SOUTH);
