@@ -57,12 +57,13 @@ public class Menu extends JFrame {
 		addButton("Set Button Area", e -> searchButton = (Rectangle) e);
 		addButton("Set Price Area", e -> priceArea = (Rectangle) e);
 		addButton("Select Items", () -> new ItemSelector(this), e -> {});
+		addButton("Start", () -> new Worker(null, searchField, searchButton, priceArea), e -> {});
 	}
 	
 	private void addButton(String msg, IOpenDialog od, IStoreResult sr) {
 		JButton newbtn = new JButton(msg);
 		newbtn.addActionListener(e -> {
-			ResultDialog rd =  od.openDialog();			
+			ResultDialog rd = od.openDialog();			
 			rd.addWindowListener(new WindowAdapter() {
 				@Override
 				public void windowClosed(WindowEvent e) {
