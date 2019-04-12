@@ -67,9 +67,12 @@ public class ItemSelector extends ResultDialog {
 		});
 		
 		JPanel bottomPane = new JPanel();
-		bottomPane.setLayout(new GridLayout(1, 2));
+		bottomPane.setLayout(new GridLayout(2, 1));
+		
+		JPanel addPane = new JPanel();
+		addPane.setLayout(new GridLayout(1, 2));
 		JTextField txt_newItemInput = new JTextField();
-		bottomPane.add(txt_newItemInput);
+		addPane.add(txt_newItemInput);
 		JButton btn_addNewItem = new JButton("Add Item");
 		btn_addNewItem.addActionListener(e -> {
 			model.addRow(txt_newItemInput.getText());
@@ -77,7 +80,14 @@ public class ItemSelector extends ResultDialog {
 			itemListTable.revalidate();
 			itemListTable.repaint();
 		});
-		bottomPane.add(btn_addNewItem);
+		addPane.add(btn_addNewItem);
+		bottomPane.add(addPane);
+		
+		JButton btn_ok = new JButton("Okay");
+		btn_ok.addActionListener(e -> {
+			ItemSelector.this.dispose();
+		});
+		bottomPane.add(btn_ok);
 		contentPane.add(bottomPane, BorderLayout.SOUTH);
 		setVisible(true);
 	}
