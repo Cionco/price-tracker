@@ -1,8 +1,10 @@
 package main;
 
-import java.awt.GridLayout;
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -23,16 +25,23 @@ public class Worker extends ResultDialog {
 		this.searchButton = searchButton;
 		this.priceArea = priceArea;
 		
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
 		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
-		contentPane.setLayout(new GridLayout(1, 2));
+		contentPane.setLayout(new BorderLayout());
 		setContentPane(contentPane);
 		
 		JTextField txtStep = new JTextField();
-		contentPane.add(txtStep);
+		txtStep.setEnabled(false);
+		contentPane.add(txtStep, BorderLayout.NORTH);
+		
+		JLabel lblImage = new JLabel();
+		contentPane.add(lblImage, BorderLayout.CENTER);
 		
 		JTextField txtResult = new JTextField();
-		contentPane.add(txtResult);
+		txtResult.setEnabled(false);
+		contentPane.add(txtResult, BorderLayout.SOUTH);
 		
 		
 		setBounds(10, searchArea.y + 100, searchArea.x - 20, 200);
