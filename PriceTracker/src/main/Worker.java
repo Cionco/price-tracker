@@ -1,6 +1,9 @@
 package main;
 
+import java.awt.AWTException;
 import java.awt.BorderLayout;
+import java.awt.Point;
+import java.awt.Robot;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -20,10 +23,14 @@ public class Worker extends ResultDialog {
 	final Rectangle priceArea;
 	
 	public Worker(ArrayList<String> items, Rectangle searchArea, Rectangle searchButton, Rectangle priceArea) {
+		items = new ArrayList<String>();
+		items.add("Engelsfeder");
+		items.add("Vollmondkristall");
 		this.items = items;
 		this.searchArea = searchArea;
 		this.searchButton = searchButton;
 		this.priceArea = priceArea;
+		
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
@@ -46,10 +53,30 @@ public class Worker extends ResultDialog {
 		
 		setBounds(10, searchArea.y + 100, searchArea.x - 20, 200);
 		setVisible(true);
+		
+		try {
+			analyze();			
+		} catch(AWTException | InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
-	
+	private void analyze() throws AWTException, InterruptedException {
+		Robot rob = new Robot();
+		Point searchMid = new Point(searchArea.x + searchArea.width / 2, searchArea.y + searchArea.height / 2);
+		Point buttonMid = new Point(searchButton.x + searchButton.width / 2, searchButton.y + searchButton.height / 2);		
+		for(String item : items) {
+			rob.mouseMove(searchMid.x, searchMid.y);
+			System.out.println("Click");
+			System.out.println("Input for " + item);
+			Thread.sleep(500);
+			rob.mouseMove(buttonMid.x, buttonMid.y);
+			System.out.println("Click");
+			System.out.println("Read data for " + item);
+			Thread.sleep(500);
+		}
+	}
 	
 	
 	
