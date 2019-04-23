@@ -2,14 +2,22 @@ package main;
 
 import java.awt.AWTException;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 
 import structure.Rectangle;
@@ -21,6 +29,8 @@ public class Worker extends ResultDialog {
 	final Rectangle searchArea;
 	final Rectangle searchButton;
 	final Rectangle priceArea;
+	
+	private volatile JLabel lblImage;
 	
 	public Worker(ArrayList<String> items, Rectangle searchArea, Rectangle searchButton, Rectangle priceArea) {
 		items = new ArrayList<String>();
@@ -43,7 +53,8 @@ public class Worker extends ResultDialog {
 		txtStep.setEnabled(false);
 		contentPane.add(txtStep, BorderLayout.NORTH);
 		
-		JLabel lblImage = new JLabel();
+		lblImage = new JLabel();
+		lblImage.setBackground(Color.BLACK);
 		contentPane.add(lblImage, BorderLayout.CENTER);
 		
 		JTextField txtResult = new JTextField();
@@ -53,9 +64,12 @@ public class Worker extends ResultDialog {
 		
 		setBounds(10, searchArea.y + 100, searchArea.x - 20, 200);
 		setVisible(true);
+			
+		new Screenshotter().execute();
 		
 		try {
-			analyze();			
+			analyze();
+//			screenshot.run();
 		} catch(AWTException | InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -78,12 +92,44 @@ public class Worker extends ResultDialog {
 		}
 	}
 	
-	
-	
+	private synchronized void setLabelIcon(ImageIcon icon) {
+		lblImage.setIcon(icon);
+	}
 	
 	@Override
 	public Object getResult() {
 		return null;
 	}
 
+	private class Screenshotter extends SwingWorker<Void, BufferedImage> {
+
+		@Override
+		protected Void doInBackground() throws Exception {
+			Robot screenshotter = new Robot();
+			BufferedImage result;
+			while(true) {
+				Point p = MouseInfo.getPointerInfo().getLocation();
+				int width = lblImage.getWidth();
+				int height = lblImage.getHeight();
+				System.out.println("run");
+				result = screenshotter.createScreenCapture(new java.awt.Rectangle(p.x - width / 2, p.y - height / 2, lblImage.getWidth(), lblImage.getHeight()));
+				publish(result);
+				Thread.sleep(50);
+			}
+		}
+
+		@Override
+		protected void process(List<BufferedImage> chunks) {
+			lblImage.setIcon(new ImageIcon(chunks.get(chunks.size() - 1)));
+			super.process(chunks);
+		}
+
+		@Override
+		protected void done() {
+			// TODO Auto-generated method stub
+			super.done();
+		}
+		
+	}
+	
 }
