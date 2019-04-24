@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Robot;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -82,7 +83,8 @@ public class Worker extends ResultDialog {
 		Point buttonMid = new Point(searchButton.x + searchButton.width / 2, searchButton.y + searchButton.height / 2);		
 		for(String item : items) {
 			rob.mouseMove(searchMid.x, searchMid.y);
-			System.out.println("Click");
+			rob.mousePress(InputEvent.BUTTON1_MASK);
+			rob.mouseRelease(InputEvent.BUTTON1_MASK);
 			System.out.println("Input for " + item);
 			Thread.sleep(500);
 			rob.mouseMove(buttonMid.x, buttonMid.y);
@@ -111,7 +113,6 @@ public class Worker extends ResultDialog {
 				Point p = MouseInfo.getPointerInfo().getLocation();
 				int width = lblImage.getWidth();
 				int height = lblImage.getHeight();
-				System.out.println("run");
 				result = screenshotter.createScreenCapture(new java.awt.Rectangle(p.x - width / 2, p.y - height / 2, lblImage.getWidth(), lblImage.getHeight()));
 				publish(result);
 				Thread.sleep(50);
